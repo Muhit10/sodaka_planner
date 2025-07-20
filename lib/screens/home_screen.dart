@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
+import 'dart:math';
+import 'dart:convert';
 import 'day_screen.dart';
 import 'dashboard_screen.dart';
+import '../models/dua.dart';
+import '../widgets/dua_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -47,7 +51,14 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const CalendarWidget(),
+      body: const Column(
+        children: [
+          Expanded(
+            child: CalendarWidget(),
+          ),
+          DuaCardWidget(),
+        ],
+      ),
     );
   }
 }
@@ -345,5 +356,71 @@ class CalendarDay extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class DuaCardWidget extends StatefulWidget {
+  const DuaCardWidget({Key? key}) : super(key: key);
+
+  @override
+  State<DuaCardWidget> createState() => _DuaCardWidgetState();
+}
+
+class _DuaCardWidgetState extends State<DuaCardWidget> {
+  List<Dua> _duas = [];
+  Dua? _currentDua;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDuas();
+  }
+
+  Future<void> _loadDuas() async {
+    try {
+      final loadedDuas = await Dua.loadDuas();
+      setState(() {
+        _duas = loadedDuas;
+        _currentDua = Dua.getRandomDua(_duas);
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        // Set a default dua in case of error
+        _currentDua = Dua(
+          arabic: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',
+          bangla: 'শুরু করছি আল্লাহর নামে যিনি পরম করুণাময়, অতি দয়ালু।'
+        );
+      });
+    }
+  }
+
+  void _refreshDua() {
+    if (_duas.isNotEmpty) {
+      setState(() {
+        _currentDua = Dua.getRandomDua(_duas);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    
+    return _currentDua == null
+        ? const SizedBox.shrink()
+        : DuaCard(
+            dua: _currentDua!,
+            onRefresh: _refreshDua,
+          );
   }
 }
