@@ -391,6 +391,7 @@ class _DuaCardWidgetState extends State<DuaCardWidget> {
         // Set a default dua in case of error
         _currentDua = Dua(
           arabic: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',
+          uccharon: 'বিসমিল্লাহির রাহমানির রাহিম',
           bangla: 'শুরু করছি আল্লাহর নামে যিনি পরম করুণাময়, অতি দয়ালু।'
         );
       });

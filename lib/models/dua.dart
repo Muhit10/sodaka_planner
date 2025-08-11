@@ -4,13 +4,15 @@ import 'package:flutter/services.dart';
 
 class Dua {
   final String arabic;
+  final String uccharon;
   final String bangla;
   
-  Dua({required this.arabic, required this.bangla});
+  Dua({required this.arabic, required this.uccharon, required this.bangla});
   
   factory Dua.fromJson(Map<String, dynamic> json) => 
     Dua(
-      arabic: json['arabic'] as String, 
+      arabic: json['arabic'] as String,
+      uccharon: json['uccharon'] as String? ?? '',
       bangla: json['bangla'] as String
     );
 
@@ -30,6 +32,7 @@ class Dua {
       // Return a default dua if the list is empty
       return Dua(
         arabic: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',
+        uccharon: 'বিসমিল্লাহির রাহমানির রাহিম',
         bangla: 'শুরু করছি আল্লাহর নামে যিনি পরম করুণাময়, অতি দয়ালু।'
       );
     }

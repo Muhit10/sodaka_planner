@@ -6,11 +6,8 @@ class DuaCard extends StatelessWidget {
   final Dua dua;
   final VoidCallback onRefresh;
 
-  const DuaCard({
-    Key? key,
-    required this.dua,
-    required this.onRefresh,
-  }) : super(key: key);
+  const DuaCard({Key? key, required this.dua, required this.onRefresh})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +21,7 @@ class DuaCard extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Colors.blue.shade50,
-              Colors.purple.shade50,
-            ],
+            colors: [Colors.blue.shade50, Colors.purple.shade50],
           ),
         ),
         padding: const EdgeInsets.all(16.0),
@@ -46,10 +40,7 @@ class DuaCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(
-                    Icons.refresh,
-                    color: Color(0xFF4859F3),
-                  ),
+                  icon: const Icon(Icons.refresh, color: Color(0xFF4859F3)),
                   onPressed: onRefresh,
                   tooltip: 'Show another dua',
                 ),
@@ -65,7 +56,20 @@ class DuaCard extends StatelessWidget {
                 color: Colors.black87,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+            if (dua.uccharon.isNotEmpty) ...[
+              Text(
+                dua.uccharon,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.4,
+                  color: Colors.blue,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
             Text(
               dua.bangla,
               textAlign: TextAlign.center,
